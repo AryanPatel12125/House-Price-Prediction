@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 import pickle
 import xgboost as xgb
@@ -8,13 +10,11 @@ from sklearn.preprocessing import LabelEncoder
 
 
 train = pd.read_csv('train.csv')
-test = pd.read_csv('test.csv')
+test = pd.read_csv('test.csv',index_col=0)
+data = pd.concat([train,test],axis=1)
 
 model = joblib.load('xgb_r2.pkl')
 
-
-# with open('model.pkl', 'wb') as model_file:
-#     pickle.dump(model, model_file)
 
 # UI elements for user input
 st.title('House Price Prediction')
@@ -67,3 +67,30 @@ if st.button('Predict'):
     # Display the prediction
     st.subheader('Prediction')
     st.write(f'The predicted house price is: ${prediction[0]:,.2f}')
+
+# Bar Plot
+st.subheader('Bar Plot')
+bar_data = data['BedroomAbvGr'].value_counts()
+st.bar_chart(bar_data)
+
+# Scatter Plot
+st.subheader('Scatter Plot')
+scatter_x = data['GrLivArea']
+scatter_y = data['SalePrice']
+fig, ax = plt.subplots()
+st.set_option('deprecation.showPyplotGlobalUse', False)
+ax.scatter(scatter_x, scatter_y)
+st.pyplot()
+
+# Line Chart
+st.subheader('Line Chart')
+line_data = data['YearBuilt']
+plt.plot(data['YearBuilt'],data['BedroomAbvGr'])
+st.pyplot()
+
+# Heatmap
+st.subheader('Heatmap')
+corr = data.corr()
+plt.figure(figsize=(12, 10))
+sns.heatmap(corr, annot=True, cmap='coolwarm',fmt = ".2f")
+st.pyplot()
