@@ -1,6 +1,6 @@
-## Aryan Patel
+## Aryan Patel, Poojan Patel
 ##### aryan12patel@gmail.com
-
+##### patelpoojan1108@gmail.com
 # Project Overview:
 # House Price Prediction Project
 
